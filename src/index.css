@@ -1,0 +1,216 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    -webkit-font-smoothing: antialiased;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-void text-white font-body antialiased;
+    overflow-x: hidden;
+  }
+
+  ::selection {
+    @apply bg-acid text-void;
+  }
+}
+
+@layer components {
+  /* Titre de section : Anton, capitales, très serré. */
+  .h-display {
+    @apply font-display uppercase leading-[0.86] tracking-[0.01em];
+  }
+
+  /* Petit label technique, façon étiquette de sécurité. */
+  .label-tech {
+    @apply font-body text-[11px] uppercase tracking-wider3 text-white/45;
+  }
+
+  .section-pad {
+    @apply px-6 py-20 md:px-12 md:py-32 lg:px-20;
+  }
+
+  .link-underline {
+    @apply relative after:absolute after:-bottom-1 after:left-0 after:h-px after:w-0 after:bg-acid after:transition-[width] after:duration-300 hover:after:w-full;
+  }
+}
+
+/* Barre de défilement discrète, cohérente avec le fond noir. */
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: #0a0a0a;
+}
+::-webkit-scrollbar-thumb {
+  background: #2a2a2a;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #51208d;
+}
+
+/* Le slider horizontal capture le drag : pas de sélection de texte parasite. */
+.no-select {
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* ------------------------------------------------------------------ */
+/* Habillage « terminal contaminé » : lignes de balayage, cadres à     */
+/* coins coupés, halos toxiques. C'est ce qui remplace les boutons     */
+/* rectangulaires par défaut.                                          */
+/* ------------------------------------------------------------------ */
+
+/* Lignes de balayage sur toute la page, très discrètes. */
+.scanlines::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(226, 250, 1, 0.035) 0px,
+    rgba(226, 250, 1, 0.035) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+  mix-blend-mode: overlay;
+}
+
+/*
+  Bouton : rectangle strict, fond noir au repos. La couleur n'arrive qu'au
+  survol, en remontant depuis le bas. Aucun coin coupé, aucune déformation.
+*/
+.btn-tox {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  padding: 1rem 2rem;
+  font-size: 11px;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: #ffffff;
+  background: #0a0a0a;
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  overflow: hidden;
+  transition: color 0.3s, border-color 0.3s;
+}
+.btn-tox::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: #e2fa01;
+  transform: scaleY(0);
+  transform-origin: bottom;
+  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.btn-tox:hover {
+  color: #0a0a0a;
+  border-color: #e2fa01;
+}
+.btn-tox:hover::before {
+  transform: scaleY(1);
+}
+.btn-tox > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* Cadre technique, angles droits. */
+.frame-tox {
+  border: 1px solid rgba(255, 255, 255, 0.14);
+}
+
+/* Repères d'angle, façon viseur. */
+.corners {
+  position: relative;
+}
+.corners::before,
+.corners::after {
+  content: '';
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  border-color: #e2fa01;
+  pointer-events: none;
+}
+.corners::before {
+  top: 0;
+  left: 0;
+  border-top: 1px solid;
+  border-left: 1px solid;
+}
+.corners::after {
+  bottom: 0;
+  right: 0;
+  border-bottom: 1px solid;
+  border-right: 1px solid;
+}
+
+/*
+  Décalage chromatique au survol, façon signal abîmé.
+
+  La transition inclut `color` : sans elle, ce raccourci écraserait le
+  `transition-colors` de Tailwind et la couleur basculerait sans fondu.
+  Le déclencheur est la ligne entière (`.group`), pas le texte seul, pour que
+  couleur et décalage partent ensemble.
+*/
+.glitch-hover {
+  transition: color 0.28s ease, transform 0.28s ease;
+}
+
+/* Léger déport seulement : pas de halo coloré, le texte reste net. */
+.group:hover .glitch-hover,
+.glitch-hover:hover {
+  transform: translateX(2px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .group:hover .glitch-hover,
+  .glitch-hover:hover {
+    transform: none;
+  }
+}
+
+/* Le mot WINGZ vire au jaune du sticker. */
+.logo-tox {
+  transition: filter 0.4s;
+}
+.logo-tox:hover {
+  filter: brightness(0) saturate(100%) invert(93%) sepia(72%) saturate(1352%)
+    hue-rotate(11deg) brightness(105%) contrast(101%);
+}
+
+/*
+  Entrée du titre du héros en CSS pur, volontairement pas en Framer Motion :
+  c'est le premier écran du site, il ne doit jamais dépendre de l'exécution du
+  JS pour être lisible. Si l'animation ne joue pas, le texte reste visible.
+*/
+@keyframes heroIn {
+  from {
+    transform: translateY(28px);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+/*
+  Pas de `fill-mode` et pas de délai : l'état naturel de l'élément est visible.
+  Si l'animation ne joue pas (onglet en arrière-plan, moteur de rendu au
+  ralenti), le titre reste lisible au lieu de rester bloqué à opacity 0.
+*/
+.hero-in {
+  animation: heroIn 1s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-in {
+    animation: none;
+  }
+}
