@@ -142,18 +142,6 @@ export default function Home() {
         {/* 2 — Album + tracklist */}
         <Panel center width="min(1150px, 94vw)" className="group/album px-8 md:px-16">
           <BackdropLoop src={asset('/video/bg-1.mp4')} opacity={0.1} />
-          {/* Halo violet qui s'allume au survol du panneau. */}
-          {/* Au survol de l'album, le jaune de la marque monte derrière la pochette. */}
-          <div
-            aria-hidden
-            className="pointer-events-none absolute left-1/4 top-1/2 h-[62vh] w-[62vh] -translate-x-1/2 -translate-y-1/2 rounded-full opacity-0 blur-[120px] transition-opacity duration-700 group-hover/album:opacity-40"
-            style={{ background: 'radial-gradient(circle, #e2fa01 0%, transparent 68%)' }}
-          />
-          <div
-            aria-hidden
-            className="pointer-events-none absolute left-1/4 top-1/2 h-[70vh] w-[70vh] -translate-x-1/2 -translate-y-1/2 rounded-full opacity-35 blur-[140px] transition-opacity duration-700 group-hover/album:opacity-15"
-            style={{ background: 'radial-gradient(circle, #51208d 0%, transparent 70%)' }}
-          />
 
           {/*
             Pochette à gauche / titres à droite dès le mobile (pas empilés) —
@@ -162,15 +150,30 @@ export default function Home() {
             celle de la tracklist) pour une pochette et des titres à taille
             généreuse, pas juste "ce qui tient".
           */}
-          <div className="relative grid grid-cols-[minmax(0,160px)_1fr] gap-4 md:grid-cols-[minmax(0,320px)_1fr] md:gap-16">
+          <div className="relative grid grid-cols-[minmax(0,200px)_1fr] gap-5 md:grid-cols-[minmax(0,320px)_1fr] md:gap-16">
             <motion.div
               initial={{ opacity: 0, scale: 0.94 }}
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
               transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-              className="corners self-start md:self-center"
+              className="relative self-start md:self-center"
             >
-              <img src={album.cover} alt={album.title} className="w-full" />
+              {/* Halo violet qui s'allume au survol du panneau — calé sur la
+                  pochette elle-même, pas sur tout l'écran. */}
+              <div
+                aria-hidden
+                className="pointer-events-none absolute left-1/2 top-1/2 h-[130%] w-[130%] -translate-x-1/2 -translate-y-1/2 rounded-full opacity-0 blur-[60px] transition-opacity duration-700 group-hover/album:opacity-40"
+                style={{ background: 'radial-gradient(circle, #e2fa01 0%, transparent 68%)' }}
+              />
+              <div
+                aria-hidden
+                className="pointer-events-none absolute left-1/2 top-1/2 h-[150%] w-[150%] -translate-x-1/2 -translate-y-1/2 rounded-full opacity-35 blur-[70px] transition-opacity duration-700 group-hover/album:opacity-15"
+                style={{ background: 'radial-gradient(circle, #51208d 0%, transparent 70%)' }}
+              />
+
+              <div className="corners relative">
+                <img src={album.cover} alt={album.title} className="w-full" />
+              </div>
               <p className="h-display mt-3 text-xl md:mt-5 md:text-3xl">{album.title}</p>
               <p className="label-tech mt-1 !text-[10px] md:mt-2">
                 {album.artist} — {album.year}
