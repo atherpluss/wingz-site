@@ -157,7 +157,7 @@ export default function Home() {
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
               transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-              className="relative mx-auto w-[52vw] max-w-[220px] self-start md:mx-0 md:w-auto md:max-w-none md:self-center"
+              className="relative w-[52vw] max-w-[220px] self-start md:w-auto md:max-w-none md:self-center"
             >
               {/* Halo violet qui s'allume au survol du panneau — calé sur la
                   pochette elle-même, pas sur tout l'écran. */}
