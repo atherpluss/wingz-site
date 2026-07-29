@@ -7,6 +7,6 @@ export default defineConfig(() => ({
   // pas sous /wingz-site/ comme pour une Project Page GitHub sans domaine.
   base: '/',
   server: {
-    port: 5180,
+    port: Number(process.env.PORT) || 5180,
   },
 }));

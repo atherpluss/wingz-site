@@ -156,24 +156,23 @@ export default function Home() {
           />
 
           {/*
-            En colonne unique (mobile), pochette + 9 titres dépassaient les
-            100svh du panneau et le stage horizontal masque tout débordement
-            (`overflow-hidden`) : le haut et le bas se faisaient couper. On ne
-            touche à rien d'autre qu'à la taille — pochette réduite, lignes de
-            titres resserrées — pour que le bloc entier tienne dans l'écran.
-            `md:` restaure les tailles d'origine dès la grille deux colonnes.
+            Pochette à gauche / titres à droite dès le mobile (pas empilés) —
+            même disposition qu'en desktop, juste des colonnes plus étroites.
+            Le côte-à-côte laisse largement la place (hauteur du bloc = juste
+            celle de la tracklist) pour une pochette et des titres à taille
+            généreuse, pas juste "ce qui tient".
           */}
-          <div className="relative grid gap-4 md:grid-cols-[minmax(0,320px)_1fr] md:gap-16">
+          <div className="relative grid grid-cols-[minmax(0,160px)_1fr] gap-4 md:grid-cols-[minmax(0,320px)_1fr] md:gap-16">
             <motion.div
               initial={{ opacity: 0, scale: 0.94 }}
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
               transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-              className="corners mx-auto w-36 self-center md:w-full"
+              className="corners self-start md:self-center"
             >
               <img src={album.cover} alt={album.title} className="w-full" />
-              <p className="h-display mt-2 text-xl md:mt-5 md:text-3xl">{album.title}</p>
-              <p className="label-tech mt-1 md:mt-2">
+              <p className="h-display mt-3 text-xl md:mt-5 md:text-3xl">{album.title}</p>
+              <p className="label-tech mt-1 !text-[10px] md:mt-2">
                 {album.artist} — {album.year}
               </p>
             </motion.div>
@@ -192,12 +191,12 @@ export default function Home() {
                     type="button"
                     onClick={() => setTrack(tr)}
                     aria-label={`${t('music.play')} ${tr.title}`}
-                    className="group flex w-full items-center gap-3 border-b border-white/10 py-1.5 text-left transition-colors duration-300 hover:border-acid/60 md:gap-6 md:py-3"
+                    className="group flex w-full items-center gap-3 border-b border-white/10 py-3 text-left transition-colors duration-300 hover:border-acid/60 md:gap-6"
                   >
-                    <span className="w-7 shrink-0 text-xs text-white/30 transition-colors duration-300 group-hover:text-acid">
+                    <span className="w-6 shrink-0 text-xs text-white/30 transition-colors duration-300 group-hover:text-acid md:w-7">
                       {tr.number}
                     </span>
-                    <span className="h-display flex-1 truncate text-base transition-colors duration-300 group-hover:text-acid md:text-2xl">
+                    <span className="h-display flex-1 text-xl leading-tight transition-colors duration-300 group-hover:text-acid md:truncate md:text-2xl">
                       {tr.title}
                       {tr.feat && (
                         <span className="ml-2 text-xs text-white/40">ft. {tr.feat}</span>
@@ -205,9 +204,9 @@ export default function Home() {
                     </span>
                     <Play
                       size={14}
-                      className="shrink-0 -translate-x-2 text-acid opacity-0 transition-all duration-300 group-hover:translate-x-0 group-hover:opacity-100"
+                      className="hidden shrink-0 -translate-x-2 text-acid opacity-0 transition-all duration-300 group-hover:translate-x-0 group-hover:opacity-100 md:block"
                     />
-                    <span className="w-10 shrink-0 text-right text-xs text-white/30 transition-colors duration-300 group-hover:text-white/70">
+                    <span className="hidden w-10 shrink-0 text-right text-xs text-white/30 transition-colors duration-300 group-hover:text-white/70 md:block">
                       {tr.duration}
                     </span>
                   </button>
@@ -238,8 +237,13 @@ export default function Home() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: i * 0.06, ease: [0.22, 1, 0.36, 1] }}
-                className="group corners relative shrink-0"
-                style={{ width: i % 3 === 0 ? '26vw' : i % 3 === 1 ? '20vw' : '23vw' }}
+                className={`group corners relative shrink-0 ${
+                  i % 3 === 0
+                    ? 'w-[58vw] sm:w-[38vw] md:w-[26vw]'
+                    : i % 3 === 1
+                      ? 'w-[45vw] sm:w-[30vw] md:w-[20vw]'
+                      : 'w-[51vw] sm:w-[34vw] md:w-[23vw]'
+                }`}
               >
                 <div className="aspect-[4/5] overflow-hidden bg-coal">
                   <img
@@ -323,14 +327,14 @@ export default function Home() {
                 speed={40}
                 settleAfter={1.2}
               />
-              {/* Le lettrage calligraphié de l'album, pas du texte composé. */}
+              {/* Sticker danger jaune officiel, pas le lettrage calligraphié. */}
               <motion.img
-                src={asset('/img/logo-partylife-mark.png')}
+                src={asset('/img/logo-partylife.png')}
                 alt="PARTY LIFE"
                 initial={{ opacity: 0, y: 18 }}
                 animate={endSeen ? { opacity: 1, y: 0 } : {}}
                 transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
-                className="w-[min(78vw,460px)]"
+                className="mx-auto w-[min(60vw,340px)] md:mx-0"
               />
 
               {/* Crédits rédigés en paragraphe plutôt qu'en tableau. */}

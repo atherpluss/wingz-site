@@ -41,7 +41,7 @@ export default function ProductCard({ product }) {
           {/* Discret au repos, il ne se lit qu'au survol : répété six fois en
               pleine grille, le bandeau écrasait les visuels. */}
           <span className="absolute bottom-3 left-3 text-[9px] uppercase tracking-wider2 text-white/25 transition-colors duration-500 group-hover:text-acid">
-            {`/ ${LIMITED}`}
+            {`LTD ED. / ${LIMITED}`}
           </span>
         </div>
 

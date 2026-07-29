@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Play, X } from 'lucide-react';
 import { allVideos, featuredVideos, tracklist } from '../data/tracklist';
@@ -26,17 +27,17 @@ export default function ClipsPanel({ onPlay }) {
     <>
       <div className="flex h-full items-center px-8 md:px-16 lg:px-24">
         <div>
-          <p className="label-tech mb-4">{t('home.videos')}</p>
-          <h2 className="h-display mb-10 text-5xl md:mb-14 md:text-7xl">{t('home.clips')}</h2>
+          <p className="label-tech mb-3 md:mb-4">{t('home.videos')}</p>
+          <h2 className="h-display mb-6 text-5xl md:mb-14 md:text-7xl">{t('home.clips')}</h2>
 
-          <div className="flex flex-col gap-6 md:flex-row md:gap-8">
+          <div className="flex flex-row gap-3 md:gap-8">
             {featuredVideos.map((track) => (
               <button
                 key={track.id}
                 type="button"
                 onClick={() => onPlay(track)}
                 aria-label={`${t('music.play')} ${track.title}`}
-                className="group relative w-[78vw] shrink-0 text-left sm:w-[52vw] md:w-[34vw] lg:w-[30vw]"
+                className="group relative w-[62vw] shrink-0 text-left sm:w-[52vw] md:w-[34vw] lg:w-[30vw]"
               >
                 <div className="relative aspect-video overflow-hidden bg-coal">
                   {/* Vignette réelle du clip, tirée de YouTube. */}
@@ -46,12 +47,14 @@ export default function ClipsPanel({ onPlay }) {
                     className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
                   />
                   <div className="absolute inset-0 bg-black/35 transition-colors group-hover:bg-black/50" />
-                  <span className="absolute left-1/2 top-1/2 flex h-16 w-16 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-white/70 transition-all duration-500 group-hover:scale-110 group-hover:border-acid group-hover:bg-acid/10">
+                  <span className="absolute left-1/2 top-1/2 flex h-14 w-14 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-white/70 transition-all duration-500 group-hover:scale-110 group-hover:border-acid group-hover:bg-acid/10 md:h-16 md:w-16">
                     <Play size={20} className="ml-0.5 text-white group-hover:text-acid" />
                   </span>
                 </div>
 
-                <p className="mt-4 font-display text-xl uppercase tracking-wide">{track.title}</p>
+                <p className="mt-3 font-display text-lg uppercase tracking-wide md:mt-4 md:text-xl">
+                  {track.title}
+                </p>
                 <p className="label-tech mt-1">
                   {track.kind === 'clip' ? t('home.officialClip') : t('home.visualizer')}
                 </p>
@@ -62,15 +65,23 @@ export default function ClipsPanel({ onPlay }) {
           <button
             type="button"
             onClick={() => setListOpen(true)}
-            className="btn-tox mt-10"
+            className="btn-tox mt-8 md:mt-10"
           >
             <span>{t('home.seeAll')}</span>
           </button>
         </div>
       </div>
 
-      {/* Fenêtre listant tous les titres. Un clic ouvre le lecteur, sur place. */}
-      <AnimatePresence>
+      {/*
+        Portée vers document.body : ce panneau vit dans la rangée transformée
+        (translateX) du stage horizontal, or un `transform` sur un ancêtre
+        redéfinit le containing block des descendants `fixed` — sans portail,
+        cette fenêtre "fixed inset-0" se retrouvait positionnée à l'intérieur
+        de cette rangée géante et coupée par son `overflow-hidden` au lieu de
+        couvrir l'écran.
+      */}
+      {createPortal(
+        <AnimatePresence>
         {listOpen && (
           <motion.div
             initial={{ opacity: 0 }}
@@ -157,7 +168,9 @@ export default function ClipsPanel({ onPlay }) {
             </motion.div>
           </motion.div>
         )}
-      </AnimatePresence>
+        </AnimatePresence>,
+        document.body
+      )}
     </>
   );
 }

@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { Route, Routes, useLocation } from 'react-router-dom';
+import { motion } from 'framer-motion';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import CartDrawer from './components/CartDrawer';
@@ -32,15 +33,25 @@ export default function App() {
       <ScrollToTop />
       <Header />
       <main>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/musique" element={<Music />} />
-          <Route path="/shop" element={<Shop />} />
-          <Route path="/presskit" element={<Presskit />} />
-          {/* Ancienne URL conservée pour ne pas casser les liens déjà partagés. */}
-          <Route path="/presse" element={<Presskit />} />
-          <Route path="*" element={<Home />} />
-        </Routes>
+        {/* Fondu léger à l'arrivée sur chaque page — pas d'exit animation :
+            la page d'accueil a ses propres écouteurs de scroll horizontal,
+            les démonter pendant une sortie animée serait fragile. */}
+        <motion.div
+          key={pathname}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+        >
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/musique" element={<Music />} />
+            <Route path="/shop" element={<Shop />} />
+            <Route path="/presskit" element={<Presskit />} />
+            {/* Ancienne URL conservée pour ne pas casser les liens déjà partagés. */}
+            <Route path="/presse" element={<Presskit />} />
+            <Route path="*" element={<Home />} />
+          </Routes>
+        </motion.div>
       </main>
       {showFooter && <Footer />}
       <CartDrawer />

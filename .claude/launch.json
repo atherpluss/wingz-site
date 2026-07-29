@@ -4,8 +4,9 @@
     {
       "name": "wingz-site",
       "runtimeExecutable": "npm",
-      "runtimeArgs": ["--prefix", "Wingz", "run", "dev"],
-      "port": 5180
+      "runtimeArgs": ["--prefix", "/Users/aetherstonesmac/Documents/wingz-site/Wingz", "run", "dev"],
+      "port": 5180,
+      "autoPort": true
     }
   ]
 }
