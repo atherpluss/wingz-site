@@ -58,7 +58,10 @@ function ScrubTrack() {
   const progress = useStageProgress();
   if (!progress) return null;
   return (
-    <div aria-hidden className="pointer-events-none absolute inset-0 flex items-center justify-center">
+    // Masquée sous md : le WebM à canal alpha ne se décode pas de façon
+    // fiable sur les navigateurs mobiles (Safari iOS en tête), et affiche
+    // un cadre gris cassé au lieu de se fondre dans le fond.
+    <div aria-hidden className="pointer-events-none absolute inset-0 hidden items-center justify-center md:flex">
       <ScrubVideo
         progress={progress}
         from={0.78}
