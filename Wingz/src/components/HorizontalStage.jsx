@@ -3,6 +3,7 @@ import {
   useCallback,
   useContext,
   useEffect,
+  useLayoutEffect,
   useRef,
   useState,
 } from 'react';
@@ -43,7 +44,13 @@ export default function HorizontalStage({ children, labels = [] }) {
     setDistance(overflow > 0 ? overflow : 0);
   }, []);
 
-  useEffect(() => {
+  // `useLayoutEffect`, pas `useEffect` : la mesure doit être prête avant la
+  // première peinture. Sinon `distance` vaut encore 0 le temps d'un frame,
+  // le conteneur scrollable n'a que la hauteur d'un écran, et `useScroll`
+  // calcule sa progression sur cette plage quasi nulle — ce qui pousse le
+  // panneau final à l'écran au chargement, le temps qu'un scroll ou un
+  // toucher force un recalcul avec la vraie distance.
+  useLayoutEffect(() => {
     measure();
     const ro = new ResizeObserver(measure);
     if (rowRef.current) ro.observe(rowRef.current);

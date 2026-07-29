@@ -147,19 +147,17 @@ export default function Home() {
           <BackdropLoop src={asset('/video/bg-1.mp4')} opacity={0.1} />
 
           {/*
-            Pochette à gauche / titres à droite dès le mobile (pas empilés) —
-            même disposition qu'en desktop, juste des colonnes plus étroites.
-            Le côte-à-côte laisse largement la place (hauteur du bloc = juste
-            celle de la tracklist) pour une pochette et des titres à taille
-            généreuse, pas juste "ce qui tient".
+            Empilé sur mobile — la pochette au-dessus, les titres en dessous —
+            pour que chacun ait vraiment sa taille propre au lieu de se
+            partager une largeur d'écran étroite. Côte-à-côte dès `md`.
           */}
-          <div className="relative grid grid-cols-[minmax(0,190px)_1fr] gap-4 md:grid-cols-[minmax(0,320px)_1fr] md:gap-16">
+          <div className="relative grid grid-cols-1 gap-5 md:grid-cols-[minmax(0,320px)_1fr] md:gap-16">
             <motion.div
               initial={{ opacity: 0, scale: 0.94 }}
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
               transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-              className="relative self-start mt-3 md:mt-0 md:self-center"
+              className="relative mx-auto w-[52vw] max-w-[220px] self-start md:mx-0 md:w-auto md:max-w-none md:self-center"
             >
               {/* Halo violet qui s'allume au survol du panneau — calé sur la
                   pochette elle-même, pas sur tout l'écran. */}
@@ -197,7 +195,7 @@ export default function Home() {
                     type="button"
                     onClick={() => setTrack(tr)}
                     aria-label={`${t('music.play')} ${tr.title}`}
-                    className="group flex w-full items-center gap-3 border-b border-white/10 py-3 text-left transition-colors duration-300 hover:border-acid/60 md:gap-6"
+                    className="group flex w-full items-center gap-3 border-b border-white/10 py-2 text-left transition-colors duration-300 hover:border-acid/60 md:gap-6 md:py-3"
                   >
                     <span className="w-6 shrink-0 text-xs text-white/30 transition-colors duration-300 group-hover:text-acid md:w-7">
                       {tr.number}
