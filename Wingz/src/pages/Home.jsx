@@ -153,13 +153,13 @@ export default function Home() {
             celle de la tracklist) pour une pochette et des titres à taille
             généreuse, pas juste "ce qui tient".
           */}
-          <div className="relative grid grid-cols-[minmax(0,240px)_1fr] gap-4 md:grid-cols-[minmax(0,320px)_1fr] md:gap-16">
+          <div className="relative grid grid-cols-[minmax(0,190px)_1fr] gap-4 md:grid-cols-[minmax(0,320px)_1fr] md:gap-16">
             <motion.div
               initial={{ opacity: 0, scale: 0.94 }}
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
               transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-              className="relative self-start mt-7 md:mt-0 md:self-center"
+              className="relative self-start mt-3 md:mt-0 md:self-center"
             >
               {/* Halo violet qui s'allume au survol du panneau — calé sur la
                   pochette elle-même, pas sur tout l'écran. */}
@@ -184,7 +184,7 @@ export default function Home() {
             </motion.div>
 
             {/* Les titres arrivent un par un. */}
-            <ol className="self-center">
+            <ol className="min-w-0 self-center">
               {tracklist.map((tr, i) => (
                 <motion.li
                   key={tr.id}
